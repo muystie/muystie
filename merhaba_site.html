@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tanışma</title>
+  <style>
+    body{
+      margin:0;font-family:Inter,Arial;display:flex;align-items:center;justify-content:center;height:100vh;
+      transition:0.4s;
+      background:#000;color:#e6eef8;
+    }
+    @keyframes bgMove{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+    .box{
+      background:rgba(255,255,255,0.06);
+      padding:26px;border-radius:14px;backdrop-filter:blur(10px);
+      max-width:360px;text-align:center;
+      box-shadow:0 0 25px rgba(0,0,0,0.45);
+      transition:0.4s;
+    }
+    h1{margin-bottom:18px;font-size:22px}
+    .btns{display:flex;gap:10px;justify-content:center;margin-top:10px}
+    button{padding:10px 16px;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+    .yes{background:#22c55e;color:#000}
+    .no{background:#ef4444;color:#000}
+
+    .sad{background:#2a0f12 !important;color:#ffb3b3 !important}
+    .love{background:#ffe6f0 !important;color:#d6336c !important}
+
+    .emojiRain span{
+      position:absolute;font-size:28px;animation:fall 2s linear forwards;
+    }
+    @keyframes fall{
+      from{transform:translateY(-40px);opacity:1}
+      to{transform:translateY(300px);opacity:0}
+    }
+
+    #note{margin-top:12px;font-weight:700;display:none}
+  </style>
+</head>
+<body>
+  <div class="box" id="box">
+    <h1 id="question">Merhaba, tanışalım mı?</h1>
+
+    <div class="btns" id="buttons">
+      <button class="yes" onclick="firstYes()">Evet</button>
+      <button class="no" onclick="firstNo()">Hayır</button>
+    </div>
+
+    <div id="note"></div>
+  </div>
+
+  <div class="emojiRain" id="emojiRain"></div>
+
+<script>
+// İlk soru EVET → Ad sorusu
+function firstYes(){
+  document.getElementById("question").innerText = "Adın ne?";
+  document.getElementById("buttons").innerHTML = `
+    <button class=\"yes\" onclick=\"nameAnswer()\">Melek</button>
+    <button class=\"yes\" onclick=\"nameAnswer()\">Melek</button>
+  `;
+}
+
+// Melek seçimi → "seninle tanışmak için can atıyorum"
+function nameAnswer(){
+  document.getElementById("question").innerText = "Seninle tanışmak için can atıyorum!";
+  document.getElementById("buttons").innerHTML = `
+    <button class=\"yes\" onclick=\"finalStep()\">Ben de</button>
+    <button class=\"yes\" onclick=\"finalStep()\">Ben de</button>
+  `;
+}
+
+// Final → yönlendirme
+function finalStep(){
+  document.getElementById("question").innerText = "Durunaz buna çok sevindi!";
+  rain();
+  setTimeout(()=>{
+    window.location.href = "https://www.instagram.com/muystie/";
+  },1500);
+}
+
+// İlk soru HAYIR → Ek ara soru
+function firstNo(){
+  document.body.classList.add("sad");
+  document.getElementById("box").classList.add("sad");
+
+  document.getElementById("question").innerText = "Her şeyin üstesinden gelebiliriz… Bir 'evet' kelimesi yeterli.";
+
+  document.getElementById("buttons").innerHTML = `
+      <button class=\"yes\" onclick=\"secondNoPhase()\">Evet</button>
+      <button class=\"no\" onclick=\"secondNoPhase()\">Hayır</button>
+    `;
+}
+
+// Ara sorudan sonra → Mustafa sensiz yapamıyor
+function secondNoPhase(){
+  document.getElementById("question").innerText = "Mustafa sensiz yapamıyor melek ve bir şansa daha ihtiyacı var.";
+  document.getElementById("buttons").innerHTML = `
+      <button class=\"yes\" onclick=\"loveEnd()\">Evet</button>
+      <button class=\"yes\" onclick=\"loveEnd()\">Evet</button>
+    `;
+}
+
+// Son aşk ekranı
+function loveEnd(){
+  document.body.classList.remove("sad");
+  document.getElementById("box").classList.remove("sad");
+
+  document.body.classList.add("love");
+  document.getElementById("box").classList.add("love");
+
+  document.getElementById("question").innerText = "Durunaz bu kararına sevindi!";
+  document.getElementById("buttons").innerHTML = "";
+
+  document.getElementById("note").style.display = "block";
+  document.getElementById("note").innerText = "Her şey daha güzel olacak.";
+
+  rain();
+  setTimeout(()=>{
+    window.location.href = "https://www.instagram.com/muystie/";
+  },1800);
+}
+
+// Kalp yağmuru
+function rain(){
+  const area = document.getElementById("emojiRain");
+  let emojis = ["❤️","💕","💗","😊","💞","💓"];
+  for(let i=0;i<20;i++){
+    let span = document.createElement("span");
+    span.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+    span.style.left = Math.random()*90 + "vw";
+    span.style.top = "-20px";
+    area.appendChild(span);
+    setTimeout(()=>{span.remove()},2000);
+  }
+}
+</script>
+</body>
+</html>
